@@ -877,3 +877,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc3183407571e94cbd69b2cba562026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodders:
+  - {fileID: 596850367}
+  - {fileID: 366125955}
