@@ -2,17 +2,24 @@
 
 public class Nodder : MonoBehaviour
 {
-        // Track how long this head has been nodding
-        private float timer = 0.0f;
-
         // Time in seconds to complete one nod
-        private float nodTime = 0.5f;
-
-        // Number of nods to do
-        private int nodsRemaining = 5;
+        public float nodSpeed = 0.5f;
 
         // How far to nod
-        private readonly float MAX_NOD_ANGLE = 10;
+        public float maxNodAngle = 10;
+
+
+        // Track how long this head has been nodding
+        private float timer;        
+
+        // Number of nods to do
+        private int nodsRemaining;
+
+        void Start()
+        {
+                timer = 0.0f;
+                nodsRemaining = 0;
+        }
 
         void Update()
         {
@@ -26,8 +33,8 @@ public class Nodder : MonoBehaviour
                 }
 
                 // Determine angle of nod for this frame
-                float th = Mathf.Lerp(0, 2 * Mathf.PI, timer / nodTime);
-                float nodAngle = MAX_NOD_ANGLE * Mathf.Sin(th);
+                float th = Mathf.Lerp(0, 2 * Mathf.PI, timer / nodSpeed);
+                float nodAngle = maxNodAngle * Mathf.Sin(th);
 
                 // Rotate head
                 transform.rotation = Quaternion.Euler(nodAngle, transform.eulerAngles.y, Mathf.Sin(Time.time) * 2);
@@ -36,7 +43,7 @@ public class Nodder : MonoBehaviour
                 timer += Time.deltaTime;
 
                 // When nod is complete, reduce nodsRemaining
-                if (timer >= nodTime)
+                if (timer >= nodSpeed)
                 {
                         nodsRemaining--;
                         timer = 0;
@@ -47,5 +54,20 @@ public class Nodder : MonoBehaviour
         {
                 transform.Translate(0, Mathf.Sin(Time.time) / 1000, 0);
                 transform.rotation = Quaternion.Euler(Mathf.Sin(Time.time) * 2, transform.eulerAngles.y, Mathf.Sin(Time.time) * 2);
+        }
+
+        public void SetSpeed(float speed)
+        {
+                nodSpeed = speed;
+        }
+
+        public void SetAngle(float angle)
+        {
+                maxNodAngle = angle;
+        }
+
+        public void AddNods(int nods)
+        {
+                nodsRemaining += nods;
         }
 }
