@@ -129,7 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 366125953}
-  - component: {fileID: 366125954}
+  - component: {fileID: 366125955}
   m_Layer: 0
   m_Name: Right Asaro
   m_TagString: Untagged
@@ -152,7 +152,7 @@ Transform:
   m_Father: {fileID: 1010532387}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 50, z: 0}
---- !u!114 &366125954
+--- !u!114 &366125955
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 366125952}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761ffc63ee4fc304a8740d1a1463f659, type: 3}
+  m_Script: {fileID: 11500000, guid: aaf854fe40158ae48abc05499b8ac117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &558736729
@@ -253,7 +253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 596850365}
-  - component: {fileID: 596850366}
+  - component: {fileID: 596850367}
   m_Layer: 0
   m_Name: Left Asaro
   m_TagString: Untagged
@@ -276,7 +276,7 @@ Transform:
   m_Father: {fileID: 1010532387}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -60, z: 0}
---- !u!114 &596850366
+--- !u!114 &596850367
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -285,7 +285,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 596850364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761ffc63ee4fc304a8740d1a1463f659, type: 3}
+  m_Script: {fileID: 11500000, guid: aaf854fe40158ae48abc05499b8ac117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &705507993

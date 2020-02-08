@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class HeadBob : MonoBehaviour
+public class Nodder : MonoBehaviour
 {
         // Track how long this head has been nodding
         private float timer = 0.0f;
