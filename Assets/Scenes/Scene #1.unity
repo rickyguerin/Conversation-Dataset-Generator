@@ -826,7 +826,7 @@ MonoBehaviour:
   isDedicated: 1
   captureGUI: 1
   mode: 0
-  customPath: 1
+  customPath: 0
   customPathFolder: C:\Users\Documents/RockVR
   streamingAddress: 
   interPupillaryDistance: 0.0635
