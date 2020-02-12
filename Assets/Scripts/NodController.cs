@@ -9,6 +9,9 @@ public class NodController : MonoBehaviour
         // Number of videos to record
         public int numVideos = 0;
 
+        // Number of seconds to record for each video
+        public int videoSeconds = 0;
+
         // Is capt currently recording?
         private bool recording;
 
@@ -52,7 +55,7 @@ public class NodController : MonoBehaviour
 
                 RockVR.Video.VideoCaptureCtrl.instance.StartCapture();
 
-                yield return new WaitForSeconds(60);
+                yield return new WaitForSeconds(videoSeconds);
 
                 RockVR.Video.VideoCaptureCtrl.instance.StopCapture();
 
