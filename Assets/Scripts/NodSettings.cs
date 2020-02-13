@@ -11,7 +11,7 @@ public abstract class NodSettings
 	// Return a number of nods within an appropriate range for the given engagement level
 	public static int Nods(EngagementLevel level)
 	{
-		switch(level)
+		switch (level)
 		{
 			case EngagementLevel.LOW:
 				return rand.Next(0, 3);
@@ -19,6 +19,8 @@ public abstract class NodSettings
 				return rand.Next(3, 6);
 			case EngagementLevel.HIGH:
 				return rand.Next(6, 10);
+			default:
+				break;
 		}
 
 		return 0;
