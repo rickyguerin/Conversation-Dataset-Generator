@@ -12,6 +12,9 @@ public class Nodder : MonoBehaviour
         // How far to nod
         public float maxNodAngle = 10;
 
+        // Random seed
+        public float headSeed = 0;
+        public float neckSeed = 0;
 
         // Track how long this head has been nodding
         private float timer;        
@@ -68,6 +71,12 @@ public class Nodder : MonoBehaviour
         public void SetAngle(float angle)
         {
                 maxNodAngle = angle;
+        }
+
+        public void SetSeeds(float headSeed, float neckSeed)
+        {
+                this.headSeed = headSeed;
+                this.neckSeed = neckSeed;
         }
 
         public void AddNods(int nods)
