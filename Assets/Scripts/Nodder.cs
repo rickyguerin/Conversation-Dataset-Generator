@@ -2,6 +2,10 @@
 
 public class Nodder : MonoBehaviour
 {
+        // Robot parts to animate
+        public Transform head;
+        public Transform neck;
+
         // Time in seconds to complete one nod
         public float nodSpeed = 0.5f;
 
