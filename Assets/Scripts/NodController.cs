@@ -49,8 +49,10 @@ public class NodController : MonoBehaviour
                 }
         }
 
-        IEnumerator RecordVideo()
+        // Capture one video of the desired length
+        private IEnumerator RecordVideo()
         {
+                // Prevents recording a new video until the current recording has finished
                 recording = true;
 
                 RockVR.Video.VideoCaptureCtrl.instance.StartCapture();
