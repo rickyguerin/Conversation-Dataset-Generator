@@ -6,6 +6,9 @@ public class Nodder : MonoBehaviour
         public Transform head;
         public Transform neck;
 
+        private Vector3 headTotalRotation;
+        private Vector3 neckTotalRotation;
+
         // Time in seconds to complete one nod
         public float nodSpeed = 0.5f;
 
@@ -24,6 +27,9 @@ public class Nodder : MonoBehaviour
 
         void Start()
         {
+                headTotalRotation = new Vector3();
+                neckTotalRotation = new Vector3();
+
                 timer = 0.0f;
                 nodsRemaining = 0;
         }
