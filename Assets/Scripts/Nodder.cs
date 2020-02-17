@@ -2,6 +2,8 @@
 
 public class Nodder : MonoBehaviour
 {
+        public enum NodState { ACTIVE, RETURN_TO_ZERO, AMBIENT };
+
         // Robot parts to animate
         public Transform head;
         public Transform neck;
