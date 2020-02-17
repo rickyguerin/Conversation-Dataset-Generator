@@ -8,8 +8,9 @@ public class Nodder : MonoBehaviour
         public Transform head;
         public Transform neck;
 
-        private Vector3 headTotalRotation;
-        private Vector3 neckTotalRotation;
+        // Progress through each body part's Sin wave
+        private Vector3 headTheta;
+        private Vector3 neckTheta;
 
         private readonly Vector3 HEAD_RANGE = new Vector3(15, 5, 5);
         private readonly Vector3 NECK_RANGE = new Vector3(15, 20, 15);
@@ -32,8 +33,8 @@ public class Nodder : MonoBehaviour
 
         void Start()
         {
-                headTotalRotation = new Vector3();
-                neckTotalRotation = new Vector3();
+                headTheta = new Vector3();
+                neckTheta = new Vector3();
 
                 timer = 0.0f;
                 nodsRemaining = 0;
@@ -62,43 +63,28 @@ public class Nodder : MonoBehaviour
         // How to move when the Robot is not nodding
         void AmbientMotion()
         {
-                headTotalRotation = new Vector3(Mathf.Sin(Time.time), headTotalRotation.y, Mathf.Sin(Time.time));
-                neckTotalRotation = new Vector3(Mathf.Sin(Time.time), neckTotalRotation.y, Mathf.Sin(Time.time));
+                headTheta += GetPerlinValues(headSeed) / 100;
+                neckTheta += GetPerlinValues(neckSeed) / 100;
 
-                head.localRotation = Quaternion.Euler(headTotalRotation);
-                neck.localRotation = Quaternion.Euler(neckTotalRotation);
+                // Set rotations
+                UpdateBodyParts();
         }
 
         // How to move while the Robot is nodding
         void NodMotion()
         {
-                // Determine angle of nod for this frame
-                float th = Mathf.Lerp(0, 2 * Mathf.PI, timer / nodSpeed);
-                float nodAngle = maxNodAngle * Mathf.Sin(th);
+                headTheta += GetPerlinValues(headSeed) / 5;
+                neckTheta += GetPerlinValues(neckSeed) / 5;
 
-                
+                // Set rotations
+                UpdateBodyParts();
+        }
 
-                // Get angles to rotate by for this frame
-                Vector3 headCurrRotation = GetPerlinValues(headSeed);
-                Vector3 neckCurrRotation = GetPerlinValues(neckSeed);
-
-                // Validate rotations to stay within range
-                for (int i = 0; i < 3; i++)
-                {
-                        if (headTotalRotation[i] + headCurrRotation[i] < -HEAD_RANGE[i]) { headCurrRotation[i] *= -1; }
-                        if (headTotalRotation[i] + headCurrRotation[i] > HEAD_RANGE[i]) { headCurrRotation[i] *= -1; }
-
-                        if (neckTotalRotation[i] + neckCurrRotation[i] < -NECK_RANGE[i]) { neckCurrRotation[i] *= -1; }
-                        if (neckTotalRotation[i] + neckCurrRotation[i] > NECK_RANGE[i]) { neckCurrRotation[i] *= -1; }
-
-                        headTotalRotation[i] += headCurrRotation[i];
-                        neckTotalRotation[i] += neckCurrRotation[i];
-                }
-
-                // headTotalRotation = (nodAngle, headTotalRotation.y, Mathf.Sin(Time.time) * 2);
-
-                head.localRotation = Quaternion.Euler(headTotalRotation);
-                neck.localRotation = Quaternion.Euler(neckTotalRotation);
+        // Rotate body parts according to current thetas
+        void UpdateBodyParts()
+        {
+                head.localRotation = Quaternion.Euler(GetRotationFromTheta(headTheta, HEAD_RANGE));
+                neck.localRotation = Quaternion.Euler(GetRotationFromTheta(neckTheta, NECK_RANGE));
         }
 
         public void SetSpeed(float speed)
@@ -122,7 +108,7 @@ public class Nodder : MonoBehaviour
                 nodsRemaining += nods;
         }
 
-        // Use Perlin noise to generate rotations for each axis
+        // Use Perlin noise to generate [-0.5, 0.5] values for each axis
         public static Vector3 GetPerlinValues(float seed)
         {
                 return new Vector3(
@@ -130,5 +116,19 @@ public class Nodder : MonoBehaviour
                         Mathf.PerlinNoise(seed - Time.time, seed) - 0.5f,
                         Mathf.PerlinNoise(seed, seed + Time.time) - 0.5f
                 );
+        }
+
+        // Use the theta as input to a Sin wave to generate a rotation
+        public static Vector3 GetRotationFromTheta(Vector3 theta, Vector3 range)
+        {
+                Vector3 rot = new Vector3();
+
+                for (int i = 0; i < 3; i++)
+                {
+                        float clamp = Mathf.PingPong(theta[i], 360);
+                        rot[i] = range[i] * Mathf.Sin(clamp);
+                }
+
+                return rot;
         }
 }
