@@ -68,10 +68,14 @@ public class Nodder : MonoBehaviour
                 }
         }
 
+        // How to move when the Robot is not nodding
         void AmbientMotion()
         {
-                transform.Translate(0, Mathf.Sin(Time.time) / 1000, 0);
-                transform.rotation = Quaternion.Euler(Mathf.Sin(Time.time) * 2, transform.eulerAngles.y, Mathf.Sin(Time.time) * 2);
+                headTotalRotation = new Vector3(Mathf.Sin(Time.time), headTotalRotation.y, Mathf.Sin(Time.time));
+                neckTotalRotation = new Vector3(Mathf.Sin(Time.time), neckTotalRotation.y, Mathf.Sin(Time.time));
+
+                head.localRotation = Quaternion.Euler(headTotalRotation);
+                neck.localRotation = Quaternion.Euler(neckTotalRotation);
         }
 
         public void SetSpeed(float speed)
