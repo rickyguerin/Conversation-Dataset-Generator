@@ -4,6 +4,8 @@ public class Nodder : MonoBehaviour
 {
         public enum NodState { ACTIVE, RETURN_TO_ZERO, AMBIENT };
 
+        private NodState state;
+
         // Robot parts to animate
         public Transform head;
         public Transform neck;
@@ -33,6 +35,8 @@ public class Nodder : MonoBehaviour
 
         void Start()
         {
+                state = NodState.AMBIENT;
+
                 headTheta = new Vector3();
                 neckTheta = new Vector3();
 
