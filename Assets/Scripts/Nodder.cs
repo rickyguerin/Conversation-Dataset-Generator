@@ -99,9 +99,9 @@ public class Nodder : MonoBehaviour
         public static Vector3 GetPerlinRotations(float seed)
         {
                 return new Vector3(
-                        Mathf.PerlinNoise(seed + Time.time * 2, seed) - 0.5f,
-                        Mathf.PerlinNoise(seed - Time.time / 2, seed) - 0.5f,
-                        Mathf.PerlinNoise(seed, seed + Time.time / 2) - 0.5f
+                        Mathf.PerlinNoise(seed + Time.time, seed) - 0.5f,
+                        Mathf.PerlinNoise(seed - Time.time, seed) - 0.5f,
+                        Mathf.PerlinNoise(seed, seed + Time.time) - 0.5f
                 );
         }
 }
