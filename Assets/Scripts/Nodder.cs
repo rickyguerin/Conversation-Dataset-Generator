@@ -9,6 +9,9 @@ public class Nodder : MonoBehaviour
         private Vector3 headTotalRotation;
         private Vector3 neckTotalRotation;
 
+        private readonly Vector3 HEAD_RANGE = new Vector3(15, 5, 5);
+        private readonly Vector3 NECK_RANGE = new Vector3(10, 10, 10);
+
         // Time in seconds to complete one nod
         public float nodSpeed = 0.5f;
 
