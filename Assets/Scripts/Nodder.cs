@@ -46,21 +46,61 @@ public class Nodder : MonoBehaviour
 
         void Update()
         {
-                AmbientMotion();
-
-                // Only nod if there are nods to do
-                if (nodsRemaining == 0) { return; }
-
-                NodMotion();
-
-                // Increase timer
-                timer += Time.deltaTime;
-
-                // When nod is complete, reduce nodsRemaining
-                if (timer >= nodSpeed)
+                // Done nodding, transition to ambient
+                if (state == NodState.RETURN_TO_ZERO)
                 {
-                        nodsRemaining--;
-                        timer = 0;
+
+                        if (Vector3.Distance(headTheta, Vector3.zero) < 0.1f && Vector3.Distance(neckTheta, Vector3.zero) < 0.1f)
+                        {
+                                state = NodState.AMBIENT;
+                        }
+                        
+                        else
+                        {
+                                ReturnToZero();
+                        }
+
+                        return;
+                }
+
+                // Nodding actively until time is up
+                else if (state == NodState.ACTIVE)
+                {
+                        if (nodsRemaining == 0)
+                        {
+                                state = NodState.RETURN_TO_ZERO;
+                        }
+                        
+                        else
+                        {
+                                NodMotion();
+
+                                // Increase timer
+                                timer += Time.deltaTime;
+
+                                // When nod is complete, reduce nodsRemaining
+                                if (timer >= nodSpeed)
+                                {
+                                        nodsRemaining--;
+                                        timer = 0;
+                                }
+                        }
+                }
+
+                // No nods to do, move gently
+                else if (state == NodState.AMBIENT)
+                {
+                        if (nodsRemaining > 0)
+                        {
+                                state = NodState.ACTIVE;
+                        }
+                        
+                        else
+                        {
+                                AmbientMotion();
+                        }
+
+                        return;
                 }
         }
 
