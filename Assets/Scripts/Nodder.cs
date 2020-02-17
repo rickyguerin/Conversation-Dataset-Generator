@@ -41,21 +41,12 @@ public class Nodder : MonoBehaviour
 
         void Update()
         {
-                // Make the head float a little
                 AmbientMotion();
 
                 // Only nod if there are nods to do
-                if (nodsRemaining == 0)
-                {
-                        return;
-                }
+                if (nodsRemaining == 0) { return; }
 
-                // Determine angle of nod for this frame
-                float th = Mathf.Lerp(0, 2 * Mathf.PI, timer / nodSpeed);
-                float nodAngle = maxNodAngle * Mathf.Sin(th);
-
-                // Rotate head
-                transform.rotation = Quaternion.Euler(nodAngle, transform.eulerAngles.y, Mathf.Sin(Time.time) * 2);
+                NodMotion();
 
                 // Increase timer
                 timer += Time.deltaTime;
@@ -73,6 +64,38 @@ public class Nodder : MonoBehaviour
         {
                 headTotalRotation = new Vector3(Mathf.Sin(Time.time), headTotalRotation.y, Mathf.Sin(Time.time));
                 neckTotalRotation = new Vector3(Mathf.Sin(Time.time), neckTotalRotation.y, Mathf.Sin(Time.time));
+
+                head.localRotation = Quaternion.Euler(headTotalRotation);
+                neck.localRotation = Quaternion.Euler(neckTotalRotation);
+        }
+
+        // How to move while the Robot is nodding
+        void NodMotion()
+        {
+                // Determine angle of nod for this frame
+                float th = Mathf.Lerp(0, 2 * Mathf.PI, timer / nodSpeed);
+                float nodAngle = maxNodAngle * Mathf.Sin(th);
+
+                
+
+                // Get angles to rotate by for this frame
+                Vector3 headCurrRotation = GetPerlinRotations(headSeed);
+                Vector3 neckCurrRotation = GetPerlinRotations(neckSeed);
+
+                // Validate rotations to stay within range
+                for (int i = 0; i < 3; i++)
+                {
+                        if (headTotalRotation[i] + headCurrRotation[i] < -HEAD_RANGE[i]) { headCurrRotation[i] *= -1; }
+                        if (headTotalRotation[i] + headCurrRotation[i] > HEAD_RANGE[i]) { headCurrRotation[i] *= -1; }
+
+                        if (neckTotalRotation[i] + neckCurrRotation[i] < -NECK_RANGE[i]) { neckCurrRotation[i] *= -1; }
+                        if (neckTotalRotation[i] + neckCurrRotation[i] > NECK_RANGE[i]) { neckCurrRotation[i] *= -1; }
+
+                        headTotalRotation[i] += headCurrRotation[i];
+                        neckTotalRotation[i] += neckCurrRotation[i];
+                }
+
+                // headTotalRotation = (nodAngle, headTotalRotation.y, Mathf.Sin(Time.time) * 2);
 
                 head.localRotation = Quaternion.Euler(headTotalRotation);
                 neck.localRotation = Quaternion.Euler(neckTotalRotation);
