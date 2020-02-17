@@ -135,4 +135,12 @@ public class Nodder : MonoBehaviour
 
                 return rot;
         }
+
+        public void ReturnToZero()
+        {
+                headTheta = Vector3.Lerp(headTheta, Vector3.zero, Time.deltaTime * 2);
+                neckTheta = Vector3.Lerp(neckTheta, Vector3.zero, Time.deltaTime * 2);
+
+                UpdateBodyParts();
+        }
 }
