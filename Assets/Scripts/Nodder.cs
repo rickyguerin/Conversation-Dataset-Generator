@@ -84,15 +84,6 @@ public class Nodder : MonoBehaviour
                 nodsRemaining += nods;
         }
 
-        // Get the current rotation of an obj as Euler angles from -180 to 180
-        public Vector3 GetEulerRot(Transform obj)
         {
-                Vector3 rot = obj.localRotation.eulerAngles;
-
-                rot.x = (rot.x > 180) ? (rot.x - 360) : (rot.x);
-                rot.y = (rot.y > 180) ? (rot.y - 360) : (rot.y);
-                rot.z = (rot.z > 180) ? (rot.z - 360) : (rot.z);
-
-                return rot;
         }
 }
