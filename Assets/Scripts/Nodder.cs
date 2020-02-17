@@ -79,8 +79,8 @@ public class Nodder : MonoBehaviour
                 
 
                 // Get angles to rotate by for this frame
-                Vector3 headCurrRotation = GetPerlinRotations(headSeed);
-                Vector3 neckCurrRotation = GetPerlinRotations(neckSeed);
+                Vector3 headCurrRotation = GetPerlinValues(headSeed);
+                Vector3 neckCurrRotation = GetPerlinValues(neckSeed);
 
                 // Validate rotations to stay within range
                 for (int i = 0; i < 3; i++)
@@ -123,7 +123,7 @@ public class Nodder : MonoBehaviour
         }
 
         // Use Perlin noise to generate rotations for each axis
-        public static Vector3 GetPerlinRotations(float seed)
+        public static Vector3 GetPerlinValues(float seed)
         {
                 return new Vector3(
                         Mathf.PerlinNoise(seed + Time.time, seed) - 0.5f,
