@@ -129,7 +129,7 @@ public class Nodder : MonoBehaviour
                 this.neckSeed = neckSeed;
         }
 
-        public void AddTalkTime(int talkTime)
+        public void AddTalkTime(float talkTime)
         {
                 secondsToTalk += talkTime;
         }
