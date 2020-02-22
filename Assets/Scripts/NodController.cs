@@ -50,6 +50,23 @@ public class NodController : MonoBehaviour
                 }
         }
 
+        // After waiting a second, determine if an interaction should begin
+        private IEnumerator PollForInteraction()
+        {
+                polling = true;
+
+                yield return new WaitForSeconds(1);
+
+                float f = Random.Range(0.0f, 1.0f);
+
+                if (f < interactRate)
+                {
+                        beginInteraction = true;
+                }
+
+                polling = false;
+        }
+
         // Capture one video of the desired length
         private IEnumerator RecordVideo()
         {
