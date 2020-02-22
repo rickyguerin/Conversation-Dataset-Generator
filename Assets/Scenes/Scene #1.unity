@@ -517,7 +517,6 @@ MonoBehaviour:
   head: {fileID: 883121698}
   neck: {fileID: 1506238620}
   nodSpeed: 0.5
-  maxNodAngle: 10
   headSeed: 0
   neckSeed: 0
 --- !u!4 &883121698 stripped
@@ -744,7 +743,6 @@ MonoBehaviour:
   head: {fileID: 284829741}
   neck: {fileID: 966329072}
   nodSpeed: 0.5
-  maxNodAngle: 10
   headSeed: 0
   neckSeed: 0
 --- !u!4 &1506238620 stripped
@@ -1011,6 +1009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc3183407571e94cbd69b2cba562026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eggLevel: 0
   nodders:
   - {fileID: 1199433416}
   - {fileID: 737742535}
