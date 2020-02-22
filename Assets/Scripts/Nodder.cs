@@ -20,9 +20,6 @@ public class Nodder : MonoBehaviour
         // Time in seconds to complete one nod
         public float nodSpeed = 0.5f;
 
-        // How far to nod
-        public float maxNodAngle = 10;
-
         // Random seed
         public float headSeed = 0;
         public float neckSeed = 0;
@@ -126,11 +123,6 @@ public class Nodder : MonoBehaviour
                 nodSpeed = speed;
         }
 
-        public void SetAngle(float angle)
-        {
-                maxNodAngle = angle;
-        }
-
         public void SetSeeds(float headSeed, float neckSeed)
         {
                 this.headSeed = headSeed;
@@ -166,6 +158,7 @@ public class Nodder : MonoBehaviour
                 return rot;
         }
 
+        // Gradually return the body parts back to their initial rotation
         public void ReturnToZero()
         {
                 headTheta = Vector3.Lerp(headTheta, Vector3.zero, Time.deltaTime * 2);

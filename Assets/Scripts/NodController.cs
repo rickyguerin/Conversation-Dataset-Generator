@@ -48,7 +48,6 @@ public class NodController : MonoBehaviour
 
                 foreach (Nodder n in nodders)
                 {
-                        n.SetAngle(Random.Range(5, 10));
                         n.SetSpeed(Random.Range(0.5f, 2.0f));
                         n.SetSeeds(Random.Range(1.0f, 100000.0f), Random.Range(1.0f, 100000.0f));
                 }
