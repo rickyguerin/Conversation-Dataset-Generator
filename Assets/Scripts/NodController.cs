@@ -41,12 +41,12 @@ public class NodController : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                        nodders[0].AddNods(Random.Range(1, 5));
+                        nodders[0].AddTalkTime(Random.Range(1, 15));
                 }
 
                 if (Input.GetKeyDown(KeyCode.LeftShift))
                 {
-                        nodders[1].AddNods(Random.Range(1, 5));
+                        nodders[1].AddTalkTime(Random.Range(1, 15));
                 }
         }
 

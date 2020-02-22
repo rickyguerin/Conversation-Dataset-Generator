@@ -27,11 +27,8 @@ public class Nodder : MonoBehaviour
         public float headSeed = 0;
         public float neckSeed = 0;
 
-        // Track how long this head has been nodding
-        private float timer;        
-
-        // Number of nods to do
-        private int nodsRemaining;
+        // Number of seconds to talk for
+        private float secondsToTalk;
 
         void Start()
         {
@@ -40,8 +37,7 @@ public class Nodder : MonoBehaviour
                 headTheta = new Vector3();
                 neckTheta = new Vector3();
 
-                timer = 0.0f;
-                nodsRemaining = 0;
+                secondsToTalk = 0.0f;
         }
 
         void Update()
@@ -66,8 +62,9 @@ public class Nodder : MonoBehaviour
                 // Nodding actively until time is up
                 else if (state == NodState.ACTIVE)
                 {
-                        if (nodsRemaining == 0)
+                        if (secondsToTalk <= 0)
                         {
+                                secondsToTalk = 0.0f;
                                 state = NodState.RETURN_TO_ZERO;
                         }
                         
@@ -75,22 +72,15 @@ public class Nodder : MonoBehaviour
                         {
                                 NodMotion();
 
-                                // Increase timer
-                                timer += Time.deltaTime;
-
-                                // When nod is complete, reduce nodsRemaining
-                                if (timer >= nodSpeed)
-                                {
-                                        nodsRemaining--;
-                                        timer = 0;
-                                }
+                                // Reduce secondsToTalk
+                                secondsToTalk -= Time.deltaTime;
                         }
                 }
 
                 // No nods to do, move gently
                 else if (state == NodState.AMBIENT)
                 {
-                        if (nodsRemaining > 0)
+                        if (secondsToTalk > 0)
                         {
                                 state = NodState.ACTIVE;
                         }
@@ -147,9 +137,9 @@ public class Nodder : MonoBehaviour
                 this.neckSeed = neckSeed;
         }
 
-        public void AddNods(int nods)
+        public void AddTalkTime(int talkTime)
         {
-                nodsRemaining += nods;
+                secondsToTalk += talkTime;
         }
 
         // Use Perlin noise to generate [-0.5, 0.5] values for each axis
