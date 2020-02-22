@@ -166,4 +166,10 @@ public class Nodder : MonoBehaviour
 
                 UpdateBodyParts();
         }
+
+        // Determine whether this Nodder is talking or not
+        public bool IsTalking()
+        {
+                return secondsToTalk > 0;
+        }
 }
