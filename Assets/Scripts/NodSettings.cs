@@ -53,4 +53,10 @@ public abstract class NodSettings
 	{
 		return Random.Range(1.0f, 100000.0f);
 	}
+
+	// Return a number of seconds of silence
+	public static float Silence()
+	{
+		return Random.Range(2.0f, 5.0f);
+	}
 }
