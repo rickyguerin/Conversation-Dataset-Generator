@@ -5,7 +5,7 @@ public abstract class NodSettings
 	// Possible values for level of engagement
 	public enum EngagementLevel { LOW, MEDIUM, HIGH }
 
-	// Return a float 
+	// Return a float to indicate the rate at which interactions happen
 	public static float InteractionRate(EngagementLevel level)
 	{
 		switch (level)
@@ -23,6 +23,23 @@ public abstract class NodSettings
 		return 0;
 	}
 
+	// Return a float to indicate the chance of the speaker changing each interaction
+	public static float ChangeSpeakerChance(EngagementLevel level)
+	{
+		switch (level)
+		{
+			case EngagementLevel.LOW:
+				return Random.Range(0.2f, 0.4f);
+			case EngagementLevel.MEDIUM:
+				return Random.Range(0.5f, 0.7f);
+			case EngagementLevel.HIGH:
+				return Random.Range(0.8f, 1.0f);
+			default:
+				break;
+		}
+
+		return 0;
+	}
 
 	// Return a duration to talk for
 	public static float SecondsToTalk()
