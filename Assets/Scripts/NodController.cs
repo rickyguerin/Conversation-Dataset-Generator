@@ -31,6 +31,12 @@ public class NodController : MonoBehaviour
         // Probability that an interaction will begin on any given second
         private float interactRate = 0.5f;
 
+        // Number of seconds of silence before polling
+        private float silenceDuration;
+
+        // Index into nodders to determine who is the active speaker
+        private int speaker;
+
         void Start()
         {
                 Reset();
@@ -41,9 +47,10 @@ public class NodController : MonoBehaviour
                 recording = false;
                 polling = false;
                 beginInteraction = false;
+                silenceDuration = 0.0f;
 
-                state = ConversationState.SILENCE;
-
+                speaker = Random.Range(0, 2);
+                state = ConversationState.POLLING;
                 interactRate = NodSettings.InteractionRate(eggLevel);
 
                 foreach (Nodder n in nodders)
