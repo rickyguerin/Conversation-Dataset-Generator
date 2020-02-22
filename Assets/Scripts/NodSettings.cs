@@ -47,4 +47,10 @@ public abstract class NodSettings
 
 		return 0.0f;
 	}
+
+	// Generate a seed number for Nodders to use
+	public static float Seed()
+	{
+		return Random.Range(1.0f, 100000.0f);
+	}
 }
