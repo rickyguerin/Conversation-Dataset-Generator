@@ -3,6 +3,13 @@ using System.Collections;
 
 public class NodController : MonoBehaviour
 {
+        public enum ConversationState { SILENCE, TALKING, RESPONDING };
+
+        private ConversationState state;
+
+        // The EngagementLevel to generate conversations with
+        public NodSettings.EngagementLevel eggLevel;
+
         // All of the heads to nod
         public Nodder[] nodders;
 
@@ -14,6 +21,15 @@ public class NodController : MonoBehaviour
 
         // Is capt currently recording?
         private bool recording;
+
+        // Currently waiting for an interaction?
+        private bool polling;
+
+        // Flag that polling sets to start an interaction
+        private bool beginInteraction;
+
+        // Probability that an interaction will begin on any given second
+        private float interactRate = 0.5f;
 
         void Start()
         {
