@@ -3,7 +3,7 @@ using System.Collections;
 
 public class NodController : MonoBehaviour
 {
-        public enum ConversationState { SILENCE, TALKING, RESPONDING };
+        public enum ConversationState { SILENCE, POLLING, TALKING, RESPONDING };
 
         private ConversationState state;
 
