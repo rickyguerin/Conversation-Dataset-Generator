@@ -33,9 +33,20 @@ public class NodController : MonoBehaviour
 
         void Start()
         {
-                recording = false;
+                Reset();
+        }
 
-                foreach(Nodder n in nodders)
+        private void Reset()
+        {
+                recording = false;
+                polling = false;
+                beginInteraction = false;
+
+                state = ConversationState.SILENCE;
+
+                interactRate = NodSettings.InteractionRate(eggLevel);
+
+                foreach (Nodder n in nodders)
                 {
                         n.SetAngle(Random.Range(5, 10));
                         n.SetSpeed(Random.Range(0.5f, 2.0f));
