@@ -91,12 +91,7 @@ public class NodController : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
 
-                float f = Random.Range(0.0f, 1.0f);
-
-                if (f < interactRate)
-                {
-                        beginInteraction = true;
-                }
+                beginInteraction = (Random.Range(0.0f, 1.0f) < interactRate);
 
                 polling = false;
         }
