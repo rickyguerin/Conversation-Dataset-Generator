@@ -24,22 +24,10 @@ public abstract class NodSettings
 	}
 
 
-	// Return a number of nods within an appropriate range for the given engagement level
-	public static int NodsToDo(EngagementLevel level)
+	// Return a duration to talk for
+	public static float SecondsToTalk()
 	{
-		switch (level)
-		{
-			case EngagementLevel.LOW:
-				return Random.Range(0, 3);
-			case EngagementLevel.MEDIUM:
-				return Random.Range(3, 6);
-			case EngagementLevel.HIGH:
-				return Random.Range(6, 10);
-			default:
-				break;
-		}
-
-		return 0;
+		return Random.Range(2.0f, 15.0f);
 	}
 
 	// Return a nod speed within an appropriate range for the given engagement level
