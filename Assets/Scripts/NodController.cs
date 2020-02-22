@@ -66,6 +66,14 @@ public class NodController : MonoBehaviour
                         StartCoroutine("RecordVideo");
                 }
 
+                else if (state == ConversationState.SILENCE)
+                {
+                        if (!polling)
+                        {
+                                StartCoroutine("PollForInteraction");
+                        }
+                }
+
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                         nodders[0].AddTalkTime(Random.Range(1, 15));
