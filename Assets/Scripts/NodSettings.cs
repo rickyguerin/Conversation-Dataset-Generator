@@ -47,6 +47,12 @@ public abstract class NodSettings
 		return Random.Range(2.0f, 15.0f);
 	}
 
+	// Return a duration to respond for
+	public static float SecondsToRespond()
+	{
+		return Random.Range(2.0f, 5.0f);
+	}
+
 	// Return a nod speed within an appropriate range for the given engagement level
 	public static float NodSpeed(EngagementLevel level)
 	{
