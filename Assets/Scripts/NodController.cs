@@ -19,11 +19,10 @@ public class NodController : MonoBehaviour
         // Number of seconds to record for each video
         public int videoSeconds = 0;
 
-        // Is capt currently recording?
+        // CoRoutine flags
         private bool recording;
-
-        // Currently waiting for an interaction?
-        private bool polling;
+        private bool pollingInteraction;
+        private bool pollingResponse;
 
         // Flag that polling sets to start an interaction
         private bool beginInteraction;
@@ -31,76 +30,153 @@ public class NodController : MonoBehaviour
         // Probability that an interaction will begin on any given second
         private float interactRate = 0.5f;
 
+        // Probability that the listener will respond to the speaker
+        private float responseRate = 0.5f;
+
+        // Probability that the speaker will change after an interaction
+        private float changeSpeakerRate = 0.5f;
+
         // Number of seconds of silence before polling
         private float silenceDuration;
 
         // Index into nodders to determine who is the active speaker
         private int speaker;
 
+        // Amount of time listener has to respond to speaker
+        private float responseWindow;
+
         void Start()
         {
                 Reset();
         }
 
+        // Re-initialize values to prepare to record a new video
         private void Reset()
         {
                 recording = false;
-                polling = false;
+                pollingInteraction = false;
+                pollingResponse = false;
                 beginInteraction = false;
                 silenceDuration = 0.0f;
 
                 speaker = Random.Range(0, 2);
                 state = ConversationState.POLLING;
                 interactRate = NodSettings.InteractionRate(eggLevel);
+                responseRate = NodSettings.ResponseRate(eggLevel);
+                changeSpeakerRate = NodSettings.ChangeSpeakerChance(eggLevel);
 
                 foreach (Nodder n in nodders)
                 {
-                        n.SetSpeed(Random.Range(0.5f, 2.0f));
                         n.SetSeeds(NodSettings.Seed(), NodSettings.Seed());
                 }
         }
 
         void Update()
         {
-                if (numVideos == 0)
-                {
-                        Application.Quit();
-                }
+                // End program when there are no videos to record
+                if (numVideos == 0) { Application.Quit(); }
 
+                // If there are videos to record, begin 
                 else if (!recording)
                 {
+                        Reset();
                         StartCoroutine("RecordVideo");
                 }
 
-                else if (state == ConversationState.SILENCE)
+                // Someone is actively talking 
+                if (state == ConversationState.TALKING)
                 {
-                        if (!polling)
+                        if (NoSpeakers() && responseWindow <= 0.0f)
                         {
-                                StartCoroutine("PollForInteraction");
+                                responseWindow = 0.0f;
+                                silenceDuration = NodSettings.Silence();
+                                state = ConversationState.SILENCE;
+                        }
+
+                        else
+                        {
+                                responseWindow -= Time.deltaTime;
+
+                                if (!pollingResponse && responseWindow > 0)
+                                {
+                                        StartCoroutine("PollForResponse");
+                                }
                         }
                 }
 
-                if (Input.GetKeyDown(KeyCode.Space))
+                // After someone talks, there is an opportunity to respond
+                else if (state == ConversationState.RESPONDING)
                 {
-                        nodders[0].AddTalkTime(Random.Range(1, 15));
+
                 }
 
-                if (Input.GetKeyDown(KeyCode.LeftShift))
+                // Between interactions, there is some amount of silence
+                else if (state == ConversationState.SILENCE)
                 {
-                        nodders[1].AddTalkTime(Random.Range(1, 15));
+                        if (silenceDuration <= 0.0f)
+                        {
+                                silenceDuration = 0.0f;
+                                state = ConversationState.POLLING;
+                        }
+
+                        else
+                        {
+                                silenceDuration -= Time.deltaTime;
+                        }
+                }
+
+                // After silence, we poll for more interactions
+                else if (state == ConversationState.POLLING)
+                {
+                        if (beginInteraction)
+                        {
+                                beginInteraction = false;
+
+                                // Change speakers?
+                                if ((Random.Range(0.0f, 1.0f) < changeSpeakerRate))
+                                {
+                                        speaker = (speaker + 1) % 2;
+                                }
+
+                                float speakTime = NodSettings.SecondsToTalk();
+                                responseWindow = speakTime + 3.0f;
+                                nodders[speaker].AddTalkTime(speakTime);
+                                state = ConversationState.TALKING;
+                        }
+
+                        else if (!pollingInteraction)
+                        {
+                                StartCoroutine("PollForInteraction");
+                        }
                 }
         }
 
         // After waiting a second, determine if an interaction should begin
         private IEnumerator PollForInteraction()
         {
-                polling = true;
+                pollingInteraction = true;
 
                 yield return new WaitForSeconds(1);
 
                 beginInteraction = (Random.Range(0.0f, 1.0f) < interactRate);
 
-                polling = false;
+                pollingInteraction = false;
+        }
+
+        // After waiting a second, determine if the listener responds
+        private IEnumerator PollForResponse()
+        {
+                pollingResponse = true;
+
+                yield return new WaitForSeconds(1);
+
+                if (Random.Range(0.0f, 1.0f) < responseRate)
+                {
+                        nodders[(speaker + 1) % 2].AddTalkTime(NodSettings.SecondsToRespond());
+                        responseWindow = 0.0f;
+                }
+
+                pollingResponse = false;
         }
 
         // Capture one video of the desired length
@@ -117,5 +193,16 @@ public class NodController : MonoBehaviour
 
                 numVideos--;
                 recording = false;
+        }
+
+        // Determine if anyone is currently speaking/responding
+        private bool NoSpeakers()
+        {
+                foreach (Nodder n in nodders)
+                {
+                        if (n.IsTalking()) return false;
+                }
+
+                return true;
         }
 }
