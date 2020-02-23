@@ -167,6 +167,14 @@ public class Nodder : MonoBehaviour
                 UpdateBodyParts();
         }
 
+        public void SnapToZero()
+        {
+                headTheta = Vector3.zero;
+                neckTheta = Vector3.zero;
+
+                UpdateBodyParts();
+        }
+
         // Determine whether this Nodder is talking or not
         public bool IsTalking()
         {

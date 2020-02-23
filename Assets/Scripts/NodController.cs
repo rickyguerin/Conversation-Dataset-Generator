@@ -57,16 +57,17 @@ public class NodController : MonoBehaviour
                 pollingInteraction = false;
                 pollingResponse = false;
                 beginInteraction = false;
-                silenceDuration = 0.0f;
+                silenceDuration = 2.0f;
 
                 speaker = Random.Range(0, 2);
-                state = ConversationState.POLLING;
+                state = ConversationState.SILENCE;
                 interactRate = NodSettings.InteractionRate(eggLevel);
                 responseRate = NodSettings.ResponseRate(eggLevel);
                 changeSpeakerRate = NodSettings.ChangeSpeakerChance(eggLevel);
 
                 foreach (Nodder n in nodders)
                 {
+                        n.SnapToZero();
                         n.SetSeeds(NodSettings.Seed(), NodSettings.Seed());
                 }
         }
@@ -77,7 +78,7 @@ public class NodController : MonoBehaviour
                 if (numVideos == 0) { Application.Quit(); }
 
                 // If there are videos to record, begin 
-                else if (!recording)
+                else if (!recording && NoSpeakers())
                 {
                         Reset();
                         StartCoroutine("RecordVideo");
