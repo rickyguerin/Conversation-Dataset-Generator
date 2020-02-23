@@ -11,9 +11,27 @@ public abstract class NodSettings
 		switch (level)
 		{
 			case EngagementLevel.LOW:
-				return Random.Range(0.2f, 0.4f);
+				return Random.Range(0.1f, 0.3f);
 			case EngagementLevel.MEDIUM:
-				return Random.Range(0.5f, 0.7f);
+				return Random.Range(0.5f, 0.6f);
+			case EngagementLevel.HIGH:
+				return Random.Range(0.8f, 1.0f);
+			default:
+				break;
+		}
+
+		return 0;
+	}
+
+	// Return a float to indicate the rate at which the listener responds to the speaker
+	public static float ResponseRate(EngagementLevel level)
+	{
+		switch (level)
+		{
+			case EngagementLevel.LOW:
+				return Random.Range(0.1f, 0.3f);
+			case EngagementLevel.MEDIUM:
+				return Random.Range(0.5f, 0.6f);
 			case EngagementLevel.HIGH:
 				return Random.Range(0.8f, 1.0f);
 			default:
@@ -29,9 +47,9 @@ public abstract class NodSettings
 		switch (level)
 		{
 			case EngagementLevel.LOW:
-				return Random.Range(0.2f, 0.4f);
+				return Random.Range(0.1f, 0.3f);
 			case EngagementLevel.MEDIUM:
-				return Random.Range(0.5f, 0.7f);
+				return Random.Range(0.5f, 0.6f);
 			case EngagementLevel.HIGH:
 				return Random.Range(0.8f, 1.0f);
 			default:
