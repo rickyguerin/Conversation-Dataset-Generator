@@ -991,9 +991,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  startOnAwake: 0
-  captureTime: 10
-  quitAfterCapture: 0
+  startOnAwake: 1
+  captureTime: 60
+  quitAfterCapture: 1
   _videoCaptures:
   - {fileID: 1871795545}
   _audioCapture: {fileID: 0}
@@ -1009,12 +1009,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc3183407571e94cbd69b2cba562026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eggLevel: 0
+  engagementLevel: 0
   nodders:
   - {fileID: 1199433416}
   - {fileID: 737742535}
-  numVideos: 0
-  videoSeconds: 0
+  dots:
+  - {fileID: 968930863}
+  - {fileID: 22618370}
+  logDirectory: C:\Users\Ricky\Documents\RockVR\Video
 --- !u!1 &1949344050
 GameObject:
   m_ObjectHideFlags: 0
