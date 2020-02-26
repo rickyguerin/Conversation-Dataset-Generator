@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using System.IO;
 
 public class NodController : MonoBehaviour
 {
-        public enum ConversationState { SILENCE, POLLING, TALKING, RESPONDING };
+        public enum ConversationState { SILENCE, POLLING, TALKING };
 
         private ConversationState state;
 
@@ -13,14 +15,9 @@ public class NodController : MonoBehaviour
         // All of the heads to nod
         public Nodder[] nodders;
 
-        // Number of videos to record
-        public int numVideos = 0;
-
-        // Number of seconds to record for each video
-        public int videoSeconds = 0;
+        public GameObject[] dots;
 
         // CoRoutine flags
-        private bool recording;
         private bool pollingInteraction;
         private bool pollingResponse;
 
@@ -45,21 +42,46 @@ public class NodController : MonoBehaviour
         // Amount of time listener has to respond to speaker
         private float responseWindow;
 
+        // Log directory
+        public string logDirectory;
+
+        // Log writer
+        private StreamWriter fileWriter;
+
+        // Frame counter for log
+        private int frameCount;
+
+        // Current timestamp for log
+        private DateTime timestamp;
+
         void Start()
         {
+                timestamp = new DateTime(0);
+                frameCount = 0;
+
+
+                DateTime now = DateTime.Now;
+
+                string filename = now.Year.ToString() + "-";
+                filename += now.Month.ToString("D2") + "-";
+                filename += now.Day.ToString("D2") + "-";
+                filename += now.Hour.ToString("D2") + "-";
+                filename += now.Minute.ToString("D2") + "-";
+                filename += now.Second.ToString("D2");
+
+                fileWriter = File.CreateText(logDirectory + "\\" + filename + "-LOG.txt");
                 Reset();
         }
 
         // Re-initialize values to prepare to record a new video
         private void Reset()
         {
-                recording = false;
                 pollingInteraction = false;
                 pollingResponse = false;
                 beginInteraction = false;
                 silenceDuration = 2.0f;
 
-                speaker = Random.Range(0, 2);
+                speaker = UnityEngine.Random.Range(0, 2);
                 state = ConversationState.SILENCE;
                 interactRate = NodSettings.InteractionRate(eggLevel);
                 responseRate = NodSettings.ResponseRate(eggLevel);
@@ -74,16 +96,6 @@ public class NodController : MonoBehaviour
 
         void Update()
         {
-                // End program when there are no videos to record
-                if (numVideos == 0) { Application.Quit(); }
-
-                // If there are videos to record, begin 
-                else if (!recording && NoSpeakers())
-                {
-                        Reset();
-                        StartCoroutine("RecordVideo");
-                }
-
                 // Someone is actively talking 
                 if (state == ConversationState.TALKING)
                 {
@@ -103,12 +115,6 @@ public class NodController : MonoBehaviour
                                         StartCoroutine("PollForResponse");
                                 }
                         }
-                }
-
-                // After someone talks, there is an opportunity to respond
-                else if (state == ConversationState.RESPONDING)
-                {
-
                 }
 
                 // Between interactions, there is some amount of silence
@@ -134,7 +140,7 @@ public class NodController : MonoBehaviour
                                 beginInteraction = false;
 
                                 // Change speakers?
-                                if ((Random.Range(0.0f, 1.0f) < changeSpeakerRate))
+                                if ((UnityEngine.Random.Range(0.0f, 1.0f) < changeSpeakerRate))
                                 {
                                         speaker = (speaker + 1) % 2;
                                 }
@@ -150,6 +156,30 @@ public class NodController : MonoBehaviour
                                 StartCoroutine("PollForInteraction");
                         }
                 }
+
+                WriteToLogFile();
+                timestamp = timestamp.AddSeconds(Time.deltaTime);
+        }
+
+        void WriteToLogFile()
+        {
+                Vector3 L = dots[0].transform.position;
+                Vector3 R = dots[1].transform.position;
+
+                string line = timestamp.Minute.ToString("D2") + ":" + timestamp.Second.ToString("D2") + ":" + timestamp.Millisecond.ToString("D3") + ",";
+                line += frameCount + ",";
+                line += "[" + L.x.ToString("F8") + ":" + L.y.ToString("F8") + ":" + L.z.ToString("F8") + "],[";
+                line += R.x.ToString("F8") + ":" + R.y.ToString("F8") + ":" + R.z.ToString("F8") + "]";
+
+                fileWriter.WriteLine(line);
+
+                frameCount++;
+        }
+
+        private void OnApplicationQuit()
+        {
+                fileWriter.Flush();
+                fileWriter.Close();
         }
 
         // After waiting a second, determine if an interaction should begin
@@ -159,7 +189,7 @@ public class NodController : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
 
-                beginInteraction = (Random.Range(0.0f, 1.0f) < interactRate);
+                beginInteraction = (UnityEngine.Random.Range(0.0f, 1.0f) < interactRate);
 
                 pollingInteraction = false;
         }
@@ -171,29 +201,13 @@ public class NodController : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
 
-                if (Random.Range(0.0f, 1.0f) < responseRate)
+                if (UnityEngine.Random.Range(0.0f, 1.0f) < responseRate)
                 {
                         nodders[(speaker + 1) % 2].AddTalkTime(NodSettings.SecondsToRespond());
                         responseWindow = 0.0f;
                 }
 
                 pollingResponse = false;
-        }
-
-        // Capture one video of the desired length
-        private IEnumerator RecordVideo()
-        {
-                // Prevents recording a new video until the current recording has finished
-                recording = true;
-
-                RockVR.Video.VideoCaptureCtrl.instance.StartCapture();
-
-                yield return new WaitForSeconds(videoSeconds);
-
-                RockVR.Video.VideoCaptureCtrl.instance.StopCapture();
-
-                numVideos--;
-                recording = false;
         }
 
         // Determine if anyone is currently speaking/responding
