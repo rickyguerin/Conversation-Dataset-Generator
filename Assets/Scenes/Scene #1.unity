@@ -992,7 +992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debug: 0
   startOnAwake: 1
-  captureTime: 5
+  captureTime: 60
   quitAfterCapture: 1
   _videoCaptures:
   - {fileID: 1871795545}
@@ -1009,7 +1009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc3183407571e94cbd69b2cba562026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eggLevel: 0
+  engagementLevel: 0
   nodders:
   - {fileID: 1199433416}
   - {fileID: 737742535}

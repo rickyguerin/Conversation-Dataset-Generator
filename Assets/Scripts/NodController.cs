@@ -10,7 +10,7 @@ public class NodController : MonoBehaviour
         private ConversationState state;
 
         // The EngagementLevel to generate conversations with
-        public NodSettings.EngagementLevel eggLevel;
+        public NodSettings.EngagementLevel engagementLevel;
 
         // All of the heads to nod
         public Nodder[] nodders;
@@ -83,9 +83,9 @@ public class NodController : MonoBehaviour
 
                 speaker = UnityEngine.Random.Range(0, 2);
                 state = ConversationState.SILENCE;
-                interactRate = NodSettings.InteractionRate(eggLevel);
-                responseRate = NodSettings.ResponseRate(eggLevel);
-                changeSpeakerRate = NodSettings.ChangeSpeakerChance(eggLevel);
+                interactRate = NodSettings.InteractionRate(engagementLevel);
+                responseRate = NodSettings.ResponseRate(engagementLevel);
+                changeSpeakerRate = NodSettings.ChangeSpeakerChance(engagementLevel);
 
                 foreach (Nodder n in nodders)
                 {
