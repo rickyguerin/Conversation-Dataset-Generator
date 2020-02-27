@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -875,11 +875,11 @@ MonoBehaviour:
   format: 0
   stereo: 0
   stereoFormat: 1
-  frameSize: 3
+  frameSize: 0
   _cubemapSize: 1
   panoramaProjection: 0
-  encodeQuality: 2
-  _antiAliasing: 3
+  encodeQuality: 0
+  _antiAliasing: 0
   _targetFramerate: 4
   isDedicated: 1
   captureGUI: 1
@@ -1016,7 +1016,7 @@ MonoBehaviour:
   dots:
   - {fileID: 968930863}
   - {fileID: 22618370}
-  logDirectory: C:\Users\Ricky\Documents\RockVR\Video
+  logDirectory: C:\Users\gueri\Documents\RockVR\Video
 --- !u!1 &1949344050
 GameObject:
   m_ObjectHideFlags: 0
